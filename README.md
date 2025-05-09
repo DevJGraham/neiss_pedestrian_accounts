@@ -1,7 +1,25 @@
-# Pedestrian Injury Classification with DistilBERT and LoRA
-This project builds a transformer-based classifier to identify pedestrian injuries from narrative records in the NEISS (National Electronic Injury Surveillance System) database. It leverages the Hugging Face transformers library and fine-tunes a DistilBERT model using Parameter-Efficient Fine-Tuning (LoRA) to reduce computational overhead while maintaining strong performance.
+# DistilBERT Fine-Tuning for Narratvie Classification
 
-Currently, the model achieves 80.0% accuracy and 83.3% precision on a held-out test set.
+This project fine-tunes a DistilBERT language model on a custom dataset for [brief task description – e.g., binary text classification of medical narratives]. 
+It’s open-source and built for collaborative improvement and experimentation.
 
-The project is open-source and actively in progress.
-Contributions and collaboration are welcome!
+## Goals
+
+- Fine-tune DistilBERT efficiently on a real-world classification task
+- Support experimentation with different datasets, hyperparameters, and adapters (like LoRA or PEFT)
+- Encourage contributions and reproducibility in the open-source NLP space
+
+## Getting Started
+
+1. Clone the repo:
+
+
+2. (Recommended) Create a virtual environment:
+
+
+3. Install dependencies:
+
+
+4. Run the training script:
+
+
