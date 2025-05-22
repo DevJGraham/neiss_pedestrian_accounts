@@ -1,0 +1,27 @@
+# macOS system files
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# VS Code settings
+.vscode/
+
+# Virtual environments
+env/
+venv/
+ENV/
+*.env
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Test/temporary files
+*.log
+*.tmp
+tempCodeRunnerFile.py
+
+# JSON data
+data/json_data/
