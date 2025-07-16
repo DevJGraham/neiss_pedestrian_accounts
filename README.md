@@ -1,31 +1,49 @@
 # NEISS Pedestrian Classification
 
-This project aims to classify pedestrian-related incidents within NEISS (National Electronic Injury Surveillance System) data using fine-tuned transformer models.
+This project classifies pedestrian-related incidents within the **NEISS (National Electronic Injury Surveillance System)** dataset by fine-tuning a transformer-based language model on free-text clinical narratives.
 
-The NEISS dataset includes a wide range of variables, such as:
+The primary focus is on the `Narrative_1` field — a short, free-text description of each emergency department visit. The goal is to identify whether a narrative describes a **pedestrian being struck by a motor vehicle**.
 
-`CPSC_Case_Number`, `Treatment_Date`, `Age`, `Sex`, `Race`, `Hispanic`, `Body_Part`, `Diagnosis`, `Disposition`, `Location`, `Fire_Involvement`, `Product_1`, `Alcohol`, `Drug`, `Narrative_1`, `Stratum`, `PSU`, `Weight`
+---
 
-This project primarily focuses on the `Narrative_1` field — a free-text description of why the patient presented to the emergency department. The goal is to fine-tune a pre-trained Large Language Model (LLM) to determine whether the narrative describes a pedestrian being struck by a motor vehicle.
+## Final Results
 
+The final model, a **fully fine-tuned BERT (bert-base-uncased)** model, demonstrated **excellent performance**:
+
+- **Accuracy**: 97.7% (95% CI: 96.9–98.3%)
+- **Sensitivity**: 97.3% (95% CI: 96.5–97.9%)
+- **Specificity**: 98.0% (95% CI: 97.3–98.5%)
+- **AUC**: 0.986 (95% CI: 0.981–0.991)
+
+> Model was trained and validated on a separate labeled set of ~1,000 samples (n = 939).
+>
+> Evaluation was conducted on ~2,000 manually labeled test samples (n = 1,970).  
+
+### ROC Curve  
+<p align="center">
+  <img src="images/neiss_roc_curve.png" width="500"/>
+</p>
+<p align="center"><i>ROC Curve demonstrating high discriminative performance (AUC = 0.986)</i></p>
+
+### Confusion Matrix  
+<p align="center">
+  <img src="images/neiss_confusion_matrix.png" width="500"/>
+</p>
+<p align="center"><i>Confusion Matrix on ~2,000 manually labeled test samples</i></p>
+
+
+---
 
 ## Project Overview
 
-- **`old_models/`**  
-  Contains earlier modeling experiments using DistilBERT with PEFT (Parameter-Efficient Fine-Tuning) and LoRA. These models explored lightweight fine-tuning techniques but were eventually outperformed by full fine-tuning.
-
 - **`neiss_colab.ipynb`**  
-  The latest model training notebook, run in Google Colab. It fine-tunes a full BERT model (without PEFT/LoRA) using GPU resources. The input was enhanced by concatenating structured variables like `Body Part`, `Diagnosis`, `Disposition`, and `Product 1` to the narrative text for improved context and performance.
+  Main training notebook (Google Colab). Fine-tunes a full BERT model on combined narrative and structured features (e.g., Body Part, Diagnosis, Disposition, Product 1) using GPU acceleration.
 
-- **`run_saved_model.ipynb`**  
-  A notebook for running inference using the best-performing model, which was uploaded to the Hugging Face Model Hub. It demonstrates loading the model, running predictions, and displaying evaluation metrics on the labeled test set.
+- **`data`**  
+  Data used for this project. Train/validation set, holdout set, overall data, data that model was evaluated on to get the final cohort
 
-## Current Best Results
-
-The current best model — a fully fine-tuned BERT model — achieves the following performance on a held-out test set:
-
-- **Accuracy**: 93.9%  
-- **Precision**: 93.2%
+- **`old_models/`**  
+  Early experimentation using DistilBERT and PEFT (LoRA). Ultimately, full fine-tuning provided better results and was chosen for the final model.
 
 ---
 
@@ -41,23 +59,25 @@ NEISS/
 ├── old models/                     # Earlier model experiments using DistilBERT and LoRA
 │   └── results/                    # Checkpoints and results from old model training runs             
 │
+│ 
+├── images/                         # Images used in README file
 │
+│ 
 ├── neiss_colab.ipynb               # Google Colab notebook: fine-tunes BERT (no LoRA) using GPU
-├── run_saved_model.ipynb           # Loads the best Hugging Face model and runs evaluation on test datata
 └── README.md                       # Project overview and instructions
 ```
 
 ## Model Deployment
 
-The best-performing model was fully fine-tuned and uploaded to the Hugging Face Model Hub under the repository [`DevJGraham/neiss_clf_bert_uncased`](https://huggingface.co/DevJGraham/neiss_clf_bert_uncased).
+The best-performing model was fully fine-tuned and uploaded to the Hugging Face Model Hub under the repository [`DevJGraham/neiss_clf_bert_uncased`](https://huggingface.co/DevJGraham/neiss_clf_bert_uncased_v3).
 
 You can easily load the model and tokenizer using the Hugging Face `transformers` library:
 
 ```python
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-model = AutoModelForSequenceClassification.from_pretrained("DevJGraham/neiss_clf_bert_uncased")
-tokenizer = AutoTokenizer.from_pretrained("DevJGraham/neiss_clf_bert_uncased")
+model = AutoModelForSequenceClassification.from_pretrained("DevJGraham/neiss_clf_bert_uncased_v3")
+tokenizer = AutoTokenizer.from_pretrained("DevJGraham/neiss_clf_bert_uncased_v3")
 ```
 
 
