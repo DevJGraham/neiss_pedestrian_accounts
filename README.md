@@ -69,7 +69,7 @@ NEISS/
 
 ## Model Deployment
 
-The best-performing model was fully fine-tuned and uploaded to the Hugging Face Model Hub under the repository [`DevJGraham/neiss_clf_bert_uncased`](https://huggingface.co/DevJGraham/neiss_clf_bert_uncased_v3).
+The best-performing model was fully fine-tuned and uploaded to the Hugging Face Model Hub under the repository [`DevJGraham/neiss_clf_bert_uncased_v3`](https://huggingface.co/DevJGraham/neiss_clf_bert_uncased_v3).
 
 You can easily load the model and tokenizer using the Hugging Face `transformers` library:
 
